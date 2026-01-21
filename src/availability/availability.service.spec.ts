@@ -17,7 +17,7 @@ describe('AvailabilityService', () => {
 
   const mockAvailability: Availability = {
     id: 'availability-123',
-    service: mockService as any,
+    service: mockService as Service,
     startAt: new Date('2026-01-25T10:00:00Z'),
     endAt: new Date('2026-01-25T11:00:00Z'),
     isAvailable: true,
@@ -132,7 +132,10 @@ describe('AvailabilityService', () => {
 
   describe('update', () => {
     it('should update an availability successfully', async () => {
-      const updateDto = { isAvailable: false };
+      const updateDto = {
+        startAt: '2026-01-25T12:00:00Z',
+        endAt: '2026-01-25T13:00:00Z',
+      };
       const updatedAvailability = { ...mockAvailability, ...updateDto };
 
       mockAvailabilityRepository.findOne.mockResolvedValue(mockAvailability);
@@ -142,14 +145,14 @@ describe('AvailabilityService', () => {
 
       expect(mockAvailabilityRepository.findOne).toHaveBeenCalled();
       expect(mockAvailabilityRepository.save).toHaveBeenCalled();
-      expect(result.isAvailable).toEqual(false);
+      expect(result).toEqual(updatedAvailability);
     });
 
     it('should throw NotFoundException if availability not found', async () => {
       mockAvailabilityRepository.findOne.mockResolvedValue(null);
 
       await expect(
-        service.update('non-existent', { isAvailable: false }),
+        service.update('non-existent', { startAt: '2026-01-25T12:00:00Z' }),
       ).rejects.toThrow(NotFoundException);
     });
   });

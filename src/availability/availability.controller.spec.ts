@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AvailabilityController } from './availability.controller';
 import { AvailabilityService } from './availability.service';
 import { Availability } from './availability.entity';
+import { Service } from 'src/services/service.entity';
 
 describe('AvailabilityController', () => {
   let controller: AvailabilityController;
@@ -11,7 +12,7 @@ describe('AvailabilityController', () => {
     service: {
       id: 'service-123',
       name: 'Test Service',
-    } as any,
+    } as Service,
     startAt: new Date('2026-01-25T10:00:00Z'),
     endAt: new Date('2026-01-25T11:00:00Z'),
     isAvailable: true,
@@ -87,7 +88,10 @@ describe('AvailabilityController', () => {
 
   describe('update', () => {
     it('should update an availability', async () => {
-      const updateDto = { isAvailable: false };
+      const updateDto = {
+        startAt: '2026-01-25T12:00:00Z',
+        endAt: '2026-01-25T13:00:00Z',
+      };
       const updatedAvailability = { ...mockAvailability, ...updateDto };
 
       mockAvailabilityService.update.mockResolvedValue(updatedAvailability);
