@@ -22,7 +22,7 @@ export class BookingsService {
   ) {}
 
   async create(dto: CreateBookingDto, userId: string) {
-    await this.servicesService.findOne(dto.serviceId); //checking if it's exist
+    await this.servicesService.findOne(dto.serviceId); //checking if it exists
 
     return this.dataSource.transaction(async (manager) => {
       const availability = await manager.findOneOrFail(Availability, {
